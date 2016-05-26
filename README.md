@@ -97,10 +97,11 @@ p_filter like this
 
 >note :
 Logical AND --> ;
-Logical OR  --> ,
--
+Logical OR  --> ,-
+
 i Have create 10 classes test too prove all is well.
 And then , this is the result testing Junit.
+
 | MySql Type | Java Type| Operator == | Operator != |  >> and >= | < and <=| IN(..)| Not IN (..) |
 |:--------|:------|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|
 |bigint|BigInteger|OK|OK|OK|OK|OK|OK|
