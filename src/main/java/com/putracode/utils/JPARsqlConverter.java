@@ -67,8 +67,17 @@ public class JPARsqlConverter implements RSQLVisitor<Predicate, Root>  {
              */
             Object argument = castDynamicClass(type,node.getArguments().get(0));
             if (op.equals(EQUAL)) {
-                if (type.equals(String.class) && argument.toString().contains("*")) {
-                    return builder.like(attrPath, argument.toString().replace('*', '%'));
+                if (type.equals(String.class) ) {
+                    if(argument.toString().contains("*") && argument.toString().contains("^")){
+                        return builder.like(builder.upper(attrPath), argument.toString().replace("*", "%").replace("^","").toUpperCase());
+                    }else if(argument.toString().contains("*")){
+                        return builder.like(attrPath, argument.toString().replace('*', '%'));
+                    }else if(argument.toString().contains("^")){
+
+                        return builder.equal(builder.upper(attrPath), argument.toString().replace("^","").toUpperCase());
+                    }else{
+                        return builder.equal(attrPath, argument);
+                    }
                 } else if (argument == null) {
                     return builder.isNull(attrPath);
                 } else {
@@ -76,9 +85,18 @@ public class JPARsqlConverter implements RSQLVisitor<Predicate, Root>  {
                 }
             }
             if (op.equals(NOT_EQUAL)) {
-                if (type.equals(String.class)  && argument.toString().contains("*")) {
-                    return builder.notLike(attrPath, argument.toString().replace('*', '%'));
-                } else if (argument == null) {
+                if (type.equals(String.class) ) {
+                    if(argument.toString().contains("*") && argument.toString().contains("^")){
+                        return builder.notLike(builder.upper(attrPath), argument.toString().replace("*", "%").replace("^", "").toUpperCase());
+                    }else if(argument.toString().contains("*")){
+                        return builder.notLike(attrPath, argument.toString().replace('*', '%'));
+                    }else if(argument.toString().contains("^")){
+                        return builder.notEqual(builder.upper(attrPath), argument.toString().replace("^", "").toUpperCase());
+                    }else{
+                        return builder.notEqual(attrPath, argument);
+                    }
+                }
+                else if (argument == null) {
                     return builder.isNotNull(attrPath);
                 } else {
                     return builder.notEqual(attrPath, argument);

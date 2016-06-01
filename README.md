@@ -1,5 +1,42 @@
 # Implementation Dynamic Specification Using RSQL-Parser Example
 
+
+###Update 2016 June 1st
+1 Support Searching In Case Sensitif field Varchar using Upper 
+  Tested On MariaDB. Maria Db default set Collaction 'utf8_general_ci' it's mean content of field default InCaseSensitive .
+  So, Make your column collaction to be 'utf8_bin';
+  ``` sql
+  ALTER TABLE table_testing_rsql MODIFY
+      varchar_test VARCHAR(100)
+        CHARACTER SET utf8
+        COLLATE utf8_bin;
+  ``` 
+2 Test Class AppStringInCaseSensitifRsqlTest.java  ;
+3. Example 
+  ``` java
+  @Test
+  public void testStringLikeAndUpperCase(){
+      List<TableTestingRsql> data=rp.findBySpec("varcharTest==^ON*");
+      assertTrue("1 Data Actually",data.size()==1);
+  }
+  ```
+4. Character '^' tell us the query must using upper
+    This is result generate SQL by Hibernate
+    ``` sql
+    SELECT 
+      tabletesti0_.ID AS ID1_0_,
+      tabletesti0_.BIG_DECIMAL_TEST AS BIG_DECI2_0_,
+      tabletesti0_.CHAR_TEST AS CHAR_TES3_0_,
+      tabletesti0_.DATE_TEST AS DATE_TES4_0_,
+      tabletesti0_.DATE_TIME_TEST AS DATE_TIM5_0_,
+      tabletesti0_.DOUBLE_TEST AS DOUBLE_T6_0_,
+      tabletesti0_.FLOAT_TEST AS FLOAT_TE7_0_,
+      tabletesti0_.INT_TEST AS INT_TEST8_0_,
+      tabletesti0_.VARCHAR_TEST AS VARCHAR_9_0_ 
+    FROM
+      TABLE_TESTING_RSQL tabletesti0_ 
+    WHERE UPPER(tabletesti0_.VARCHAR_TEST) LIKE ?
+    ```
 ## Introducing 
 >Changes Is Enemy, But We Must Prepared . -
 
@@ -113,6 +150,8 @@ And then , this is the result testing Junit.
 |float|Float|OK|OK|OK|OK|Not OK|Not OK|
 |char|Character|OK|OK|OK|OK|OK|OK|
 |double|Double|OK|OK|OK|OK|OK|OK|OK|
+
+
 
 References
 - [Github RSQL-parser](https://github.com/jirutka/rsql-parser)
