@@ -12,6 +12,7 @@
         COLLATE utf8_bin;
   ``` 
 2 Test Class AppStringInCaseSensitifRsqlTest.java  ;
+
 3. Example 
   ``` java
   @Test
@@ -20,8 +21,10 @@
       assertTrue("1 Data Actually",data.size()==1);
   }
   ```
+  
 4. Character '^' tell us the query must using upper
     This is result generate SQL by Hibernate
+    
     ``` sql
     SELECT 
       tabletesti0_.ID AS ID1_0_,
@@ -37,6 +40,8 @@
       TABLE_TESTING_RSQL tabletesti0_ 
     WHERE UPPER(tabletesti0_.VARCHAR_TEST) LIKE ?
     ```
+    
+    
 ## Introducing 
 >Changes Is Enemy, But We Must Prepared . -
 
